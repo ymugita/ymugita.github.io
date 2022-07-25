@@ -1,0 +1,75 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <div id="container2">
+            <p>touch area</p>
+            <div id="touch-area2">
+                <div id="blue-area">blue</div>
+                <div id="red-area">red</div>
+            </div>
+            <div>
+                <span>touches</span>
+                <button onclick="pushBtn('display-touches')">表示・非表示 切替</button>
+                <div id="display-touches"></div>
+            </div>
+            <div>
+                <span>changedTouches</span>
+                <button onclick="pushBtn('display-changed-touches')">表示・非表示 切替</button>
+                <div id="display-changed-touches"></div>
+            </div>
+            <div>
+                <span>targetTouches</span>
+                <button onclick="pushBtn('display-target-touches')">表示・非表示 切替</button>
+                <div id="display-target-touches"></div>
+            </div>
+        </div>
+        <script>
+            // 要素の取得
+            const touchArea2 = document.getElementById("touch-area2")
+            const displayTouches = document.getElementById("display-touches")
+            const displayChangedTouches = document.getElementById("display-changed-touches")
+            const displayTargetTouches = document.getElementById("display-target-touches")
+        
+            // 各タッチイベントのイベントリスナー登録
+            touchArea2.addEventListener("touchstart", function(){ updateDisplay(event) } )
+            touchArea2.addEventListener("touchend", function(){ updateDisplay(event) } )
+            touchArea2.addEventListener("touchmove",function(){ 
+                event.preventDefault()  // 画面スクロールを防止
+                updateDisplay(event) 
+            } )
+            touchArea2.addEventListener("touchcancel",function(){ updateDisplay(event) } )
+        
+            // タッチの情報を画面に表示する
+            function updateDisplay(event){
+                displayTouches.innerHTML = getTouchInfo(event.touches)
+                displayChangedTouches.innerHTML = getTouchInfo(event.changedTouches)
+                displayTargetTouches.innerHTML = getTouchInfo(event.targetTouches)
+            }
+        
+            // 与えられたタッチリストからタッチ情報を取得
+            function getTouchInfo(touchList){
+                let displayStr = ""
+                for ( const touch of touchList ){
+                    displayStr += `
+                    identifier: ${touch.identifier}<br>
+                    screenX:    ${touch.screenX}<br>
+                    screenY:    ${touch.screenY}<br>
+                    clientX:    ${touch.clientX}<br>
+                    clientY:    ${touch.clientY}<br>
+                    pageX:      ${touch.pageX}<br>
+                    pageY:      ${touch.pageY}<br>
+                    target:     ${touch.target.id}<br>
+                    --------------------------------------<br>`
+                }
+                return displayStr
+            }
+        
+            // 表示・非表示ボタン
+            function pushBtn(targetId){
+                document.getElementById(targetId).classList.toggle('hide')
+            }
+        </script>
+    </body>
+</html>
